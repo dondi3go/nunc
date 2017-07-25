@@ -2,11 +2,11 @@
 
 # What is Nunc ?
 
-Nunc (_now_ in latin) is a light PHP framework and CMS created for fun and education purpose.
+Nunc (_now_ in latin) is a lightweight PHP framework and CMS created for fun and education purpose.
 It uses Twitter Bootstrap css framework for UI.
 
 In its current state, nunc is single-user. Persistency is acheived using flat xml files 
-(no need for a database), making nunc perfectly suited for very small spaces hosts, however,
+(no need for a database), making nunc perfectly suited for very small space hosts. However,
 in this perspective, nunc in obviously not very scalable.
 
 The use of javascript is limited to a minimum for the sake of simplicity. Today,
@@ -16,9 +16,9 @@ javascript (jquery and bootstrap) is only used in the TopNavBar component.
 
 Download nunc on your local machine. 
 Edit admin.php file to change login and password.
-Upload all the files on your server
-Rename _.htaccess into .htaccess
-That's all
+Upload all the files on your server.
+Rename _.htaccess into .htaccess.
+That's all.
 
 You can now adapt nunc to your needs.
 
@@ -28,9 +28,8 @@ A brief introduction to nunc file tree
 . core
 . main
 . more
-. nuds
+. nubs
 . ouds
-. test
 
 # Versionning
 
