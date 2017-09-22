@@ -56,3 +56,7 @@ A brief introduction to nunc file tree
 
 0.0.170708
 - Start RSSReader
+
+# Troubleshooting
+q: You upload the files, but index.php or admin.php do not display anything
+a: May be __DIR__ constant does not exist, check your PHP version in your root .htaccess or another file depending on your host service (.ovhconfig in OVH), make it at least 5.6
