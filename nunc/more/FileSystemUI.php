@@ -382,20 +382,91 @@ class TextFileContentUI implements IDisplayable
         return $str;
     }
 
+    private function checkPost($var)
+    {
+        return isset($_POST[$var]);
+    }
+
     public function display(IPage $page)
     {
+        if( $this->checkPost(TextFileContentAction::CREATE) )
+        {
+            FileSystem::saveFile($this->strAbsoluteFilePath, "");
+            $this->displayView($page);
+        }
+        else if( $this->checkPost(TextFileContentAction::DELETE) )
+        {
+            FileSystem::delete($this->strAbsoluteFilePath);
+            $this->displayView($page);
+        }
+        else if( $this->checkPost(TextFileContentAction::EDIT) )
+        {
+            $this->displayEdit($page);
+        }
+        else if( $this->checkPost(TextFileContentAction::SAVE) )
+        {
+            $content = $_POST["filecontent"];
+            FileSystem::saveFile($this->strAbsoluteFilePath, $content);
+            $this->displayView($page);
+        }
+        else
+        {
+            $this->displayView($page);
+        }
+    }
 
+    public function displayEdit(IPage $page)
+    {
         $str = "";
-        $strBasename = FileSystem::getFileBasename($this->strAbsoluteFilePath);
+
         if(!FileSystem::fileExists($this->strAbsoluteFilePath))
         {
+            $str.= "<table class='table'><tr><td>";
+            $str.= $this->displayErrorMessage("file not found");
+            $str.= "</td></tr></table>";
+        }
+        else
+        {
+            $str = "<form method='post'>\n";
             $str.= "<div class='row'><div class='col-md-12'>\n";
 
-            // Basename
-            $str.= "<b>".$strBasename."</b>";
+            // 'back' Button
+            $str.= "<button class='btn btn-default pull-left' name='".TextFileContentAction::CANCEL."' type='submit'>\n";
+            $str.= "    ".ICON::LEFT." back\n";
+            $str.= "</button>\n";
+
+            // 'save' Button
+            $str.= "<button class='btn btn-default pull-right' name='".TextFileContentAction::SAVE."' type='submit'>\n";
+            $str.= "    ".ICON::SAVE." save\n";
+            $str.= "</button>\n";
+
+            $str.= "<br/><br/>\n";
+
+            $str.= "</div></div>\n";
+
+            $str.= "<table class='table'><tr><td>";
+            // File Content
+            $strText = FileSystem::loadFile($this->strAbsoluteFilePath);
+            $str.= "<textarea class='form-control' rows='10' type='text' name='filecontent'>".$strText."</textarea><br/>\n";
+            $str.= "</td></tr></table>";
+            $str.= "</form>\n";
+        }
+        $page->addBodyContent($str);
+
+        //$page->addBodyContent($this->displayErrorMessage("edit"));
+    }
+
+    public function displayView(IPage $page)
+    {
+        $str = "";
+
+        if(!FileSystem::fileExists($this->strAbsoluteFilePath))
+        {
+            $str = "<form method='post'>\n";
+            $str.= "<div class='row'><div class='col-md-12'>\n";
 
             // 'create' Button
-            $str.= "<button class='btn btn-default pull-right' name='".DBEditAction::EDIT_OBJECT."' type='submit'>\n";
+            $str.= "<button class='btn btn-default pull-right' name='".TextFileContentAction::CREATE."' type='submit'>\n";
             $str.= "    ".ICON::ADD." create\n";
             $str.= "</button>\n";
             $str.= "<br/><br/>\n";
@@ -406,16 +477,15 @@ class TextFileContentUI implements IDisplayable
             // Message
             $str.= $this->displayErrorMessage("file not found");
             $str.= "</td></tr></table>";
+            $str.= "</form>\n";
         }
         else
         {
+            $str = "<form method='post'>\n";
             $str.= "<div class='row'><div class='col-md-12'>\n";
 
-            // Basename
-            $str.= "<b>".$strBasename."</b>";
-
             // 'edit' Button
-            $str.= "<button class='btn btn-default pull-right' name='".DBEditAction::EDIT_OBJECT."' type='submit'>\n";
+            $str.= "<button class='btn btn-default pull-right' name='".TextFileContentAction::EDIT."' type='submit'>\n";
             $str.= "    ".ICON::PEN." edit\n";
             $str.= "</button>\n";
             $str.= "<br/><br/>\n";
@@ -423,10 +493,18 @@ class TextFileContentUI implements IDisplayable
             $str.= "</div></div>\n";
 
             $str.= "<table class='table'><tr><td>";
+
             // File Content
             $strText = FileSystem::loadFile($this->strAbsoluteFilePath);
             $str.= "<textarea class='form-control' rows='10' type='text' name='filecontent' readonly>".$strText."</textarea><br/>\n";
             $str.= "</td></tr></table>";
+
+            // 'delete' Button
+            $str.= "<button class='btn btn-default pull-right' name='".TextFileContentAction::DELETE."' type='submit'>\n";
+            $str.= "    ".ICON::CROSS." delete\n";
+            $str.= "</button>\n";
+
+            $str.= "</form>\n";
         }
         $page->addBodyContent($str);
     }
