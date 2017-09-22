@@ -13,7 +13,8 @@ require_once(__DIR__.'/nunc/more/AuthenticationUI.php');
 require_once(__DIR__.'/nunc/more/AuthenticationLogger.php');
 require_once(__DIR__.'/nunc/more/SecurityUI.php');
 require_once(__DIR__.'/nunc/more/DebugUI.php');
-require_once(__DIR__.'/nunc/more/SeoUI.php');
+require_once(__DIR__.'/nunc/more/SitemapUI.php');
+require_once(__DIR__.'/nunc/more/RobotsUI.php');
 require_once(__DIR__.'/nunc/more/DBViewUI.php');
 
 require_once(__DIR__.'/nunc/nubs/VisitsUI.php');
@@ -39,7 +40,8 @@ function getMiscUI()
     $ui = new MidNavBar();
     $ui->addLeftItem($ui1, "security", Icon::EYE);
     $ui->addLeftItem(new DebugUI(), "debug", Icon::BUG);
-    $ui->addLeftItem(new SeoUI(), "s e o", Icon::SEARCH);
+    $ui->addLeftItem(new SitemapUI(), "sitemap", Icon::SEARCH);
+    $ui->addLeftItem(new RobotsUI(), "robots", Icon::SEARCH);
 
     return $ui;
 }
@@ -57,7 +59,7 @@ $page->addBodyContent("<div class='container'><br/>\n");
 $auth = new Authentication();
 $logger = new AuthenticationMailLogger("ericpain@free.fr", false, true, false);
 $auth->setLogger($logger);
-$auth->addUser("user", "toto");
+$auth->addUser("eric", "florence");
 
 // DATA STORE FOLDER
 $storeDir = Config::data_store_folder;
